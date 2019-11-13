@@ -1,5 +1,5 @@
 
-class Bestelling:
+class Bestelling: dfff
     """
    :method: Dit is een class die operaties uitvoert op bestellingen.
    :input: Geen.
