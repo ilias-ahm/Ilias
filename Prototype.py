@@ -1,5 +1,5 @@
 
-class Bestelling: tt
+class Bestelling:
     """
    :method: Dit is een class die operaties uitvoert op bestellingen.
    :input: Geen.
