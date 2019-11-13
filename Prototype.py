@@ -51,23 +51,6 @@ class keyify:
         self.key = key
 
 
-class Item:
-    """
-   :method: Dit is een class die gebruikt word om elementen te creëren.
-   :input: Geen.
-   :output: Geen.
-   :pre-condition: Geen
-   :post-condition: Lege stack en lege stackTop.
-    """
-    def __init__(self, val):
-        """
-       :method: De constructor voor Item class. Maakt een element aan met de mogelijkheid om zijn vorige en volgende element te weten die toegevoegd kan worden aan stacks, queues, ...
-       :input: val(int): dit is de element die toegevoegd word aan de stack.
-       :output: Geen.
-       :pre-condition: Geen.
-       :post-condition: Een element aangemaakt met de mogelijkheid om de vorige en volgende element te weten.
-        """
-
 
 class Stack:                    #Geimplementeerd door Jason Halder
     """
@@ -125,7 +108,7 @@ class Stack:                    #Geimplementeerd door Jason Halder
        :method: Voegt een nieuw element toe aan de stack.
        :input: val(classobj): de element die men wenst toe te voegen.
        :output: Geeft "True" voor succes en "False" voor mislukking.
-       :pre-condition: Geen
+       :pre-condition: Geenhttps://github.com/ilias-ahm/Ilias
        :post-condition: Aan de stack is de element val toegevoegd. stackTop is nu het reeds toegevoegde element.
 
         """
@@ -151,7 +134,7 @@ class Ketting:          #Geimplementeerd door Mano Lemmens
         """
 
     def tableInsert(self, val):
-        """
+        """https://github.com/ilias-ahm/Ilias
        :method: Voegt een element toe aan de ketting.
        :input: val(classobj): element die men wenst toe te voegen aan de ketting.
        :output: Geeft "True" voor succes en "False" voor mislukking.
@@ -317,8 +300,10 @@ class BST:          #Geimplementeerd door Giorgi Guledani
         """
     def retrieve(self):
         """
-
-        :return:
+        :method: Zoekt een opgegeven element en returnt deze.
+        :input: key(int): 
+        :pre-condition:een lege of gevulde binaire zoekboom
+        :post-condition: Als het element is gevonden word deze gereturnd, zo niet word er False gereturnd.
         """
 
     def inorderTraversal(self):
@@ -331,8 +316,22 @@ class BST:          #Geimplementeerd door Giorgi Guledani
 
         """
     def isEmpty(self):
+        """
+       :method: Toont aan of de BST leeg is of niet.
+       :input: Geen.
+       :output: Geeft True als het leeg is en False als het niet leeg is.
+       :pre-condition: Geen.
+       :post-condition: Geen.
+
+        """
 
     def delete(self):
+        """
+        :method: Verwijdert een element uit de zoekboom.
+        :input: key(int)
+        :output: Geeft True als het het gelukt is en False als het niet gelukt is.
+        :pre-condition: Een lege of gevulde boom.
+        :post-condition: Het element is verwijdert als de operatie is gelukt.
 
 
 
