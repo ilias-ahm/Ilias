@@ -332,39 +332,3 @@ class BST:          #Geimplementeerd door Giorgi Guledani
         :output: Geeft True als het het gelukt is en False als het niet gelukt is.
         :pre-condition: Een lege of gevulde boom.
         :post-condition: Het element is verwijdert als de operatie is gelukt.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
