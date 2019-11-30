@@ -296,8 +296,33 @@ class BST:          #Geimplementeerd door Giorgi Guledani
        :output: Geeft "True" voor succes en "False" voor mislukking.
        :pre-condition: Een lege of gevulde binaire zoekboom.
        :post-condition: Het nieuw element is toegevoegd en is geplaatst op de plek volgens de methode van een binaire zoekboom.
-
         """
+        
+        if self.root is None:
+            self.root = node
+            self.parent = None
+            return
+        if self.root.match == node.match:
+            if self.rightTree is None:
+                self.rightTree = BST(node)
+                self.rightTree.parent = self
+                return
+            return self.rightTree.insert(node)
+
+        if self.root.match > node.match:
+            if self.leftTree is None:
+                self.leftTree = BST(node) #We geven een object BST samen met het node mee aan de deelboom
+                self.leftTree.parent = self #We geven hier een parent omdat we niet meer terugkeren naar de functie maar gewoon "returnen"
+                return
+            return self.leftTree.insert(node)
+
+        if self.root.match < node.match:
+            if self.rightTree is None:
+                self.rightTree = BST(node)
+                self.rightTree.parent = self
+                return
+            return self.rightTree.insert(node)
+
     def retrieve(self):
         """
         :method: Zoekt een opgegeven element en returnt deze.
@@ -305,6 +330,19 @@ class BST:          #Geimplementeerd door Giorgi Guledani
         :pre-condition:een lege of gevulde binaire zoekboom
         :post-condition: Als het element is gevonden word deze gereturnd, zo niet word er False gereturnd.
         """
+
+        if self.root:
+            if self.root.match == match:
+                return self
+            if self.root.match > match:
+                if self.leftTree:
+                    return self.leftTree.retrieve(match)
+            if self.root.match < match:
+                if self.rightTree:
+                    return self.rightTree.retrieve(match)
+            return print("Geen titel gevonden!")
+        else:
+            return "Lege boom"
 
     def inorderTraversal(self):
         """
@@ -322,8 +360,11 @@ class BST:          #Geimplementeerd door Giorgi Guledani
        :output: Geeft True als het leeg is en False als het niet leeg is.
        :pre-condition: Geen.
        :post-condition: Geen.
-
         """
+        
+        if self.root is None:
+            return True
+        return False
 
     def delete(self):
         """
@@ -332,3 +373,41 @@ class BST:          #Geimplementeerd door Giorgi Guledani
         :output: Geeft True als het het gelukt is en False als het niet gelukt is.
         :pre-condition: Een lege of gevulde boom.
         :post-condition: Het element is verwijdert als de operatie is gelukt.
+        """"
+        toDelete = self.retrieve(match)
+
+        if toDelete is None: # Te verwijderen node bestaat niet
+            return
+        if toDelete.leftTree and toDelete.rightTree:
+            successor = toDelete.GetInorderSuccessor(match)
+            temp = toDelete.root # We wisselen de positie van de successor en de te verwijderen node om
+            toDelete.root = successor.root
+            successor.root = temp
+            return successor.delete(successor.root.match)
+
+        if toDelete.rightTree: # Als er enkel een rechter deelboom is
+            toDelete.root = toDelete.rightTree.root # Switchen we de node in de rechter deelboom met de te verwijderen node
+            toDelete.leftTree = toDelete.rightTree.leftTree # De linker deelboom van de van rechter
+            toDelete.rightTree = toDelete.rightTree.rightTree
+            return
+
+        if toDelete.leftTree: # Als er enkel een linker deelboom is
+            toDelete.root = toDelete.leftTree.root
+            toDelete.rightTree = toDelete.leftTree.rightTree
+            toDelete.leftTree = toDelete.leftTree.leftTree
+            return
+
+        if toDelete.parent:
+            if toDelete.parent.leftTree == toDelete:
+                toDelete.parent.leftTree = None
+            else:
+                toDelete.parent.rightTree = None
+            return
+        self.root = None
+        
+    def GetInorderSuccessor(self, match):
+        node = self.retrieve(match)
+        successor = node.rightTree
+        while successor.leftTree is not None:
+            successor = successor.leftTree
+        return successor
