@@ -269,15 +269,19 @@ class Queue:        #Geimplementeerd door Ilias Ahmindach
        :post-condition: Geen.
 
          """
-class BST:          #Geimplementeerd door Giorgi Guledani
+class Node:          #Geimplementeerd door Giorgi Guledani
     """
    :method: Dit is een class die operaties uitvoer op de binaire zoekboom.
    :input: Geen.
    :output: Geen.
    :pre-condition: Geen.
    :post-condition: Geen.
-
     """
+    def __init__(self, match):
+    self.match = match
+
+
+class BST:
     def __init__(self):
         """
        :method: Dit is de constructor voor de class BST en maakt de root, linkerdeelboom en rechterdeelboom.
@@ -287,6 +291,10 @@ class BST:          #Geimplementeerd door Giorgi Guledani
        :post-condition: Een lege root, linkerdeelboom  en rechterdeelboom.
 
         """
+        self.root = root
+        self.parent = None
+        self.leftTree = None
+        self.rightTree = None
 
 
     def insert(self, val):
