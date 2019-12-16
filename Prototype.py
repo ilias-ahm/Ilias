@@ -281,64 +281,20 @@ class Node:          #Geimplementeerd door Giorgi Guledani
     self.match = match
 
 
+
 class BST:
     def __init__(self):
-        """
-       :method: Dit is de constructor voor de class BST en maakt de root, linkerdeelboom en rechterdeelboom.
-       :input: Geen.
-       :output: Geen.
-       :pre-condition: Geen.
-       :post-condition: Een lege root, linkerdeelboom  en rechterdeelboom.
-
-        """
-        self.root = root
+        self.root = None
         self.parent = None
         self.leftTree = None
         self.rightTree = None
 
-
-    def insert(self, val):
-        """
-       :method: Voegt een nieuw element aan de boom.
-       :input: val(classobject): Het element die men wenst toe te voegen.
-       :output: Geeft "True" voor succes en "False" voor mislukking.
-       :pre-condition: Een lege of gevulde binaire zoekboom.
-       :post-condition: Het nieuw element is toegevoegd en is geplaatst op de plek volgens de methode van een binaire zoekboom.
-        """
-        
+    def isEmpty(self):
         if self.root is None:
-            self.root = node
-            self.parent = None
-            return
-        if self.root.match == node.match:
-            if self.rightTree is None:
-                self.rightTree = BST(node)
-                self.rightTree.parent = self
-                return
-            return self.rightTree.insert(node)
+            return True
+        return False
 
-        if self.root.match > node.match:
-            if self.leftTree is None:
-                self.leftTree = BST(node) #We geven een object BST samen met het node mee aan de deelboom
-                self.leftTree.parent = self #We geven hier een parent omdat we niet meer terugkeren naar de functie maar gewoon "returnen"
-                return
-            return self.leftTree.insert(node)
-
-        if self.root.match < node.match:
-            if self.rightTree is None:
-                self.rightTree = BST(node)
-                self.rightTree.parent = self
-                return
-            return self.rightTree.insert(node)
-
-    def retrieve(self):
-        """
-        :method: Zoekt een opgegeven element en returnt deze.
-        :input: key(int): 
-        :pre-condition:een lege of gevulde binaire zoekboom
-        :post-condition: Als het element is gevonden word deze gereturnd, zo niet word er False gereturnd.
-        """
-
+    def retrieve(self, match):
         if self.root:
             if self.root.match == match:
                 return self
@@ -352,27 +308,41 @@ class BST:
         else:
             return "Lege boom"
 
-    def isEmpty(self):
-        """
-       :method: Toont aan of de BST leeg is of niet.
-       :input: Geen.
-       :output: Geeft True als het leeg is en False als het niet leeg is.
-       :pre-condition: Geen.
-       :post-condition: Geen.
-        """
-        
+    def insert(self, node):
         if self.root is None:
-            return True
-        return False
+            self.root = node
+            self.parent = None
+            return
+        if self.root.match == node.match:
+            if self.rightTree is None:
+                self.rightTree = BST()
+                self.rightTree.root = node
+                self.rightTree.parent = self
+                return
+            return self.rightTree.insert(node)
 
-    def delete(self):
-        """
-        :method: Verwijdert een element uit de zoekboom.
-        :input: key(int)
-        :output: Geeft True als het het gelukt is en False als het niet gelukt is.
-        :pre-condition: Een lege of gevulde boom.
-        :post-condition: Het element is verwijdert als de operatie is gelukt.
-        """"
+        if self.root.match > node.match:
+            if self.leftTree is None:
+                self.leftTree = BST() #We geven een object BST samen met het node mee aan de deelboom
+                self.leftTree.root = node
+                self.leftTree.parent = self #We geven hier een parent omdat we niet meer terugkeren naar de functie maar gewoon "returnen"
+                return
+            return self.leftTree.insert(node)
+
+        if self.root.match < node.match:
+            if self.rightTree is None:
+                self.rightTree = BST()
+                self.rightTree.root = node
+                self.rightTree.parent = self
+                return
+            return self.rightTree.insert(node)
+
+    def findBestMatch(self):
+        if self.rightTree: # Als er een rechterkind is
+            return self.rightTree.findBestMatch() # Dan gaan we naar het rechterkind
+        return self.root # Anders zijn we klaar met zoeken
+
+    def delete(self,match):
         toDelete = self.retrieve(match)
 
         if toDelete is None: # Te verwijderen node bestaat niet
@@ -403,13 +373,71 @@ class BST:
                 toDelete.parent.rightTree = None
             return
         self.root = None
-        
+
     def GetInorderSuccessor(self, match):
         node = self.retrieve(match)
         successor = node.rightTree
         while successor.leftTree is not None:
             successor = successor.leftTree
         return successor
+
+    def printDot(self):
+        dot = "Graph G { "
+        dot += "\n"
+        dot += self.generateDot()
+        dot += "\n"
+        dot += "}"
+        return dot
+
+    def generateDot(self, count=0):
+        dot = ""
+        link = "--"
+        newline = "\n"
+
+        #basisgeval (eerst root)
+        if not self.leftTree:
+            filler = 'a' + str(randint(1,1000))
+            dot += filler + ' [style ="invisible"]'
+            dot += newline
+            dot += str(self.root.match) + link + filler + ' [style=invis]'
+            count += 1
+        else:
+            dot += str(self.root.match) + link
+            dot += str(self.leftTree.root.match)
+        dot += newline
+
+        if not self.rightTree:
+            filler = 'a' + str(randint(1,1000))
+            dot += filler + ' [style ="invisible"]'
+            dot += newline
+            dot += str(self.root.match) + link + filler + ' [style=invis]'
+            count += 1
+        else:
+            dot += str(self.root.match) + link + str(self.rightTree.root.match)
+        dot += newline
+
+        #recursieve stap (preorder traversal)
+        if self.leftTree:
+            dot += self.leftTree.generateDot()
+        if self.rightTree:
+            dot += self.rightTree.generateDot()
+
+        return dot
+
+    def inorderTraverse(self):
+
+            res = []
+            if self.leftTree is None and self.rightTree is None: # Als de node een blad is
+                res.append(self.root.match)
+                return res
+            else:
+                if self.leftTree:
+                    res += self.leftTree.inorderTraverse()
+                res.append(self.root.match)
+                if self.rightTree:
+                    res += self.rightTree.inorderTraverse()
+                return res
+
     
 #--------------------------- onderstaande code om BST te testen ---------------------------
     
